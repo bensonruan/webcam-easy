@@ -1,4 +1,4 @@
-import Webcam from '../../src/webcam-js.js';
+import Webcam from '../../src/webcam-easy.js';
 
 const webcamElement = document.getElementById('webcam');
 
