@@ -1,0 +1,295 @@
+#webcam-app {
+  background-image: url(../images/background.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: black;
+  width: 100vw;
+  height: 100vh;
+}
+
+.webcam-container{
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+}
+
+#background-container {
+    height: 100vh;
+    width: 100vw;
+}
+
+@media screen and (min-width: 768px) {
+    .webcam-container {
+        background-attachment: fixed;
+    }
+ }
+
+.form-control.webcam-start{
+    position: absolute;
+    background: black;
+    opacity: 0.8;
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    text-shadow: 1px 1px #000;
+    font-size: 1.2rem;
+    width: 300px;
+    height: 55px;
+    z-index: 9999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.form-control.webcam-on {
+  position: fixed;
+  top: 10px;
+  bottom: auto;
+  left: 10px;
+  right: auto;
+  transition: all 100ms;
+  width: 145px;
+}
+.form-control.webcam-off {
+    transition: all 100ms;
+}
+  
+
+  .form-switch {
+    display: inline-block;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .form-switch i {
+    position: relative;
+    display: inline-block;
+    margin-right: .5rem;
+    width: 60px;
+    height: 30px;
+    background-color: #e6e6e6;
+    border-radius: 25px;
+    vertical-align: text-bottom;
+    transition: all 0.3s linear;
+  }
+  
+  .form-switch i::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 56px;
+    height: 25px;
+    background-color: #fff;
+    border-radius: 15px;
+    transform: translate3d(2px, 2px, 0) scale3d(1, 1, 1);
+    transition: all 0.25s linear;
+  }
+  
+  .form-switch i::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    background-color: #fff;
+    border: 1px solid grey;
+    border-radius: 15px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+    transform: translate3d(2px, 2px, 0);
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .form-switch:active i::after {
+    width: 60px;
+    transform: translate3d(2px, 2px, 0);
+  }
+  
+  .form-switch:active input:checked + i::after { transform: translate3d(16px, 2px, 0); }
+  
+  .form-switch input { display: none; }
+  
+  .form-switch input:checked + i { background-color: #4BD763; }
+  
+  .form-switch input:checked + i::before { transform: translate3d(18px, 2px, 0) scale3d(0, 0, 0); }
+  
+  .form-switch input:checked + i::after { transform: translate3d(30px, 2px, 0); }
+
+  .form-switch input:disabled + i { background-color: #eeeeee; cursor: not-allowed; }
+
+  .form-switch input:disabled + i::after {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.10);
+  }
+
+
+  .app-panel{
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+    background-color: black;
+  }
+
+  #webcam{
+    display: block;
+    position: relative;
+    width: auto;
+    height: 100vh;
+    z-index: 999;
+    pointer-events: none;
+    margin: auto;
+  }
+
+  .webcam-mirror {
+    -moz-transform: scale(-1, 1); 
+    -webkit-transform: scale(-1, 1); 
+    -o-transform: scale(-1, 1); 
+    transform: scale(-1, 1); 
+    filter: FlipH;
+  }
+
+  .md-modal {
+    margin: auto;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2000;
+      visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      -moz-backface-visibility: hidden;
+      backface-visibility: hidden;
+  }
+  
+  .md-show {
+      visibility: visible;
+  }
+  
+  .md-overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      visibility: hidden;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      opacity: 0;
+      background: rgba(#e4f0e3, 0.8);
+      -webkit-transition: all 0.3s;
+      -moz-transition: all 0.3s;
+      transition: all 0.3s;
+  }
+  
+  .md-show ~ .md-overlay {
+      opacity: 1;
+      visibility: visible;
+  }
+  
+  .md-effect-12 .md-content {
+      -webkit-transform: scale(0.8);
+      -moz-transform: scale(0.8);
+      -ms-transform: scale(0.8);
+      transform: scale(0.8);
+      opacity: 0;
+      -webkit-transition: all 0.3s;
+      -moz-transition: all 0.3s;
+      transition: all 0.3s;
+  }
+  
+  .md-show.md-effect-12 ~ .md-overlay {
+      background-color: #e4f0e3;
+  } 
+  
+  .md-effect-12 .md-content h3,
+  .md-effect-12 .md-content {
+      background: transparent;
+  }
+  
+  .md-show.md-effect-12 .md-content {
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -ms-transform: scale(1);
+      transform: scale(1);
+      opacity: 1;
+  }
+
+ #errorMsg {
+     position: fixed;
+     top: 22vh;
+     left: 0;
+     padding: 20px;
+     z-index: 999999;
+ }
+
+ @media screen and (min-width: 768px) {
+    #errorMsg {
+        position: fixed;
+        top: 32vh;
+        left: 20vw;
+        padding: 20px;
+        z-index: 999999;
+    }
+ }
+
+ #cameraFlip {
+  width: 70px;
+    height: 55px;
+    margin-left: 30px;
+    margin-top: -10px;
+    position: absolute;
+    cursor: pointer;
+    background-color: black;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url(../images/camera_flip_white.png);
+    background-size: cover;
+}
+
+.cameraControls {
+  position: absolute;
+  bottom: 10vh;
+  width: 100%;
+  z-index: 99999;
+  background: transparent;
+  opacity: 0.7;
+  padding: 10px;
+}
+
+
+.material-icons{
+  width: 100px;
+  font-size: 50px !important;
+  color: white;
+  width: 80px;
+  height: 80px;
+  background-color: black;
+  border-radius: 50%;
+  padding-top: 15px;
+  margin: 0 10px;
+}
+
+.flash{ 
+  position:fixed; 
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:#fff;
+  z-index: 999999;
+}
+
+#canvas{
+  background-color: transparent;
+  position: absolute;
+  height: 100vh;
+  z-index: 9999;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}

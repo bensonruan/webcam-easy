@@ -1,0 +1,20 @@
+{
+  "name": "webcam-js",
+  "version": "1.0.0",
+  "description": "HTML5 webcam streaming library with from and back camera switch",
+  "main": "src/webcam-js.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bensonruan/webcam-js"
+  },
+  "keywords": [
+    "webcam",
+    "camera",
+    "getusermedia",
+    "streaming",
+    "frontcamera",
+    "backcamera"
+  ],
+  "author": "Benson Ruan",
+  "license": "MIT"
+}
