@@ -1,5 +1,5 @@
 #webcam-app {
-  background-image: url(../images/background.jpg);
+  background-image: url(../images//background.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -26,7 +26,7 @@
  }
 
 .form-control.webcam-start{
-    position: absolute;
+    position: relative;
     background: black;
     opacity: 0.8;
     padding: 10px 20px;
@@ -34,11 +34,10 @@
     color: white;
     text-shadow: 1px 1px #000;
     font-size: 1.2rem;
-    width: 300px;
+    width: 350px;
     height: 55px;
     z-index: 9999;
-    top: 0;
-    bottom: 0;
+    top: 45%;
     left: 0;
     right: 0;
     margin: auto;
@@ -46,12 +45,12 @@
 
 .form-control.webcam-on {
   position: fixed;
-  top: 10px;
+  top: 10vh;
   bottom: auto;
-  left: 10px;
+  left: 0px;
   right: auto;
   transition: all 100ms;
-  width: 145px;
+  width: 145px!important;
 }
 .form-control.webcam-off {
     transition: all 100ms;
@@ -139,14 +138,6 @@
     z-index: 999;
     pointer-events: none;
     margin: auto;
-  }
-
-  .webcam-mirror {
-    -moz-transform: scale(-1, 1); 
-    -webkit-transform: scale(-1, 1); 
-    -o-transform: scale(-1, 1); 
-    transform: scale(-1, 1); 
-    filter: FlipH;
   }
 
   .md-modal {
@@ -237,14 +228,14 @@
  #cameraFlip {
   width: 70px;
     height: 55px;
-    margin-left: 30px;
+    margin-left: 40px;
     margin-top: -10px;
     position: absolute;
     cursor: pointer;
     background-color: black;
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url(../images/camera_flip_white.png);
+    background-image: url(../images//camera_flip_white.png);
     background-size: cover;
 }
 
@@ -284,6 +275,7 @@
 #canvas{
   background-color: transparent;
   position: absolute;
+  width: auto;
   height: 100vh;
   z-index: 9999;
   margin: auto;
@@ -292,4 +284,30 @@
   right: 0;
   margin-left: auto;
   margin-right: auto;
+}
+
+@media screen and (max-width: 420px) {
+  .form-control.webcam-start{
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .cameraControls {
+    bottom: 25vh;
+  }
+}
+
+@media screen and (min-width: 420px) and (max-width: 767px) {
+  .form-control.webcam-on {
+    top: 17vh;
+    left: 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .form-control.webcam-on {
+    top: 16vh;
+    left: 8vw;
+  }
 }

@@ -8,7 +8,7 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel='stylesheet' type='text/css' media='screen' href='style/webcam.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='style/webcam-demo.css'>
     <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>  
 </head>
 <body>
@@ -32,6 +32,8 @@
                 <div id="webcam-container" class="webcam-container col-12 d-none p-0 m-0">
                     <video id="webcam" autoplay playsinline width="640" height="480"></video>
                     <canvas id="canvas" class="d-none"></canvas>
+                    <div class="flash"></div>
+                    <audio id="snapSound" src="audio/snap.wav" preload = "auto"></audio>
                 </div>
                 <div id="cameraControls" class="cameraControls">
                     <a href="#" id="exit-app" title="Exit App" class="d-none"><i class="material-icons">exit_to_app</i></a>
