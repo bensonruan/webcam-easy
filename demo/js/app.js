@@ -1,5 +1,3 @@
-import Webcam from '../../src/webcam-easy.js';
-
 const webcamElement = document.getElementById('webcam');
 
 const canvasElement = document.getElementById('canvas');
