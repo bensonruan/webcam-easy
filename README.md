@@ -29,7 +29,7 @@ npm install webcam-easy
 
 #### 1. Include script tag in html <head>
 ```html
-<script type="text/javascript" src="webcam-easy.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
 ```
     or Import into javascript
 ``` js
