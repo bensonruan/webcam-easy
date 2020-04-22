@@ -1,6 +1,6 @@
 {
   "name": "webcam-easy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "HTML5 webcam streaming javascript library, with front and back camera switch, also have take photo function.",
   "main": "src/webcam-easy.js",
   "repository": {
