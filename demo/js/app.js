@@ -20,7 +20,6 @@ $("#webcam-switch").change(function () {
             });
     }
     else {        
-        $("#errorMsg").addClass("d-none");
         cameraStopped();
         webcam.stop();
         console.log("webcam stopped");
@@ -59,6 +58,7 @@ function cameraStarted(){
 }
 
 function cameraStopped(){
+    $("#errorMsg").addClass("d-none");
     $("#wpfront-scroll-top-container").removeClass("d-none");
     $("#webcam-control").removeClass("webcam-on");
     $("#webcam-control").addClass("webcam-off");
