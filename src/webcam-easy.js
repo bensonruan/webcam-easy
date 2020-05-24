@@ -174,7 +174,7 @@ export default class Webcam {
         }
         context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
         context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
-        let data = canvas.toDataURL('image/png');
+        let data = this._canvasElement.toDataURL('image/png');
         return data;
       }
       else{
