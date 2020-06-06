@@ -1,21 +1,30 @@
 {
-  "name": "webcam-easy",
-  "version": "1.0.4",
-  "description": "HTML5 webcam streaming javascript library, with front and back camera switch, also have take photo function.",
-  "main": "src/webcam-easy.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bensonruan/webcam-easy"
-  },
-  "homepage": "https://bensonruan.com/how-to-access-webcam-and-take-photo-with-javascript",
-  "keywords": [
-    "webcam",
-    "camera",
-    "getusermedia",
-    "streaming",
-    "frontcamera",
-    "backcamera"
-  ],
-  "author": "Benson Ruan",
-  "license": "MIT"
+	"name": "webcam-easy",
+	"version": "1.0.4",
+	"description": "HTML5 webcam streaming javascript library, with front and back camera switch, also have take photo function.",
+	"main": "src/webcam-easy.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bensonruan/webcam-easy"
+	},
+	"homepage": "https://bensonruan.com/how-to-access-webcam-and-take-photo-with-javascript",
+	"keywords": [
+		"webcam",
+		"camera",
+		"getusermedia",
+		"streaming",
+		"frontcamera",
+		"backcamera"
+	],
+	"author": "Benson Ruan",
+	"license": "MIT",
+	"devDependencies": {
+		"@babel/core": "^7.4.3",
+		"babel-loader": "^8.0.5",
+		"@babel/polyfill": "^7.4.3",
+		"@babel/preset-env": "^7.4.3",
+		"webpack": "^4.16.1",
+		"webpack-cli": "^3.0.8",
+		"webpack-dev-server": "^3.1.10"
+	}
 }
