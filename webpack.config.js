@@ -1,6 +1,6 @@
-var webpack = require('webpack');
-var path = require('path');
-var paths = {
+const webpack = require('webpack');
+const path = require('path');
+const paths = {
 	src: path.join(__dirname, 'src'),
 	dist: path.join(__dirname, 'dist'),
 };

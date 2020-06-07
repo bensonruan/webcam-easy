@@ -29,14 +29,8 @@ class Webcam {
 	/* Get all video input devices info */
 	getVideoInputs(mediaDevices) {
 		this._webcamList = [];
-		mediaDevices.forEach(mediaDevice => {
-			if (mediaDevice.kind === 'videoinput') {
-				this._webcamList.push(mediaDevice);
-			}
-		});
-		if (this._webcamList.length == 1) {
-			this._facingMode = 'user';
-		}
+		mediaDevices.forEach(mediaDevice => mediaDevice.kind === 'videoinput' && this._webcamList.push(mediaDevice));
+		this._webcamList.length == 1 && (this._facingMode = 'user');
 		return this._webcamList;
 	}
 	/* Get media constraints */
@@ -47,11 +41,10 @@ class Webcam {
 		} else {
 			videoConstraints.deviceId = { exact: this._selectedDeviceId };
 		}
-		const constraints = {
+		return {
 			video: videoConstraints,
 			audio: false
 		};
-		return constraints;
 	}
 	/* Select camera based on facingMode */
 	selectCamera() {
@@ -89,52 +82,32 @@ class Webcam {
 				.then(webcams => {
 					this.selectCamera(); //select camera based on facingMode
 					if (startStream) {
-						this.stream()
-							.then(facingMode => {
-								resolve(this._facingMode);
-							})
-							.catch(reject);
+						this.stream().then(resolve).catch(reject);
 					} else {
 						resolve(this._selectedDeviceId);
 					}
-				})
-				.catch(reject);
+				}).catch(reject);
 		});
 	}
 	/* Get all video input devices info */
 	async info() {
-		return new Promise((resolve, reject) => {
-			navigator.mediaDevices.enumerateDevices()
-				.then(devices => {
-					this.getVideoInputs(devices);
-					resolve(this._webcamList);
-				})
-				.catch(reject);
-		});
+		return navigator.mediaDevices.enumerateDevices().then(devices => this.getVideoInputs(devices));
 	}
 	/* Start streaming webcam to video element */
 	async stream() {
-		return new Promise((resolve, reject) => {
-			navigator.mediaDevices.getUserMedia(this.getMediaConstraints())
-				.then(stream => {
-					this._streamList.push(stream);
-					this._webcamElement.srcObject = stream;
-					if (this._facingMode == 'user' && !this._isStopped) this._horizontalFlipFactor = -1;
-					this.caliberateWebCamElement();
-					delete this._isStopped;
-					this._webcamElement.play();
-					resolve(this._facingMode);
-				})
-				.catch(reject);
+		return navigator.mediaDevices.getUserMedia(this.getMediaConstraints()).then(stream => {
+			this._streamList.push(stream);
+			this._webcamElement.srcObject = stream;
+			if (this._facingMode == 'user' && !this._isStopped) this._horizontalFlipFactor = -1;
+			this.caliberateWebCamElement();
+			delete this._isStopped;
+			this._webcamElement.play();
+			return this._facingMode;
 		});
 	}
 	/* Stop streaming webcam */
 	stop() {
-		this._streamList.forEach(stream => {
-			stream.getTracks().forEach(track => {
-				track.stop();
-			});
-		});
+		this._streamList.forEach(stream => stream.getTracks().forEach(track => track.stop()));
 		this._isStopped = true;
 	}
 	snap() {
