@@ -1,4 +1,4 @@
-export default class Webcam {
+class Webcam {
 	constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null) {
 		this._webcamElement = webcamElement;
 		this._webcamElement.width = this._webcamElement.width || 640;
@@ -9,6 +9,7 @@ export default class Webcam {
 		this._selectedDeviceId = '';
 		this._canvasElement = canvasElement;
 		this._snapSoundElement = snapSoundElement;
+		this._horizontalFlipFactor = 1;
 	}
 	get facingMode() {
 		return this._facingMode;
@@ -40,13 +41,13 @@ export default class Webcam {
 	}
 	/* Get media constraints */
 	getMediaConstraints() {
-		var videoConstraints = {};
+		const videoConstraints = {};
 		if (this._selectedDeviceId == '') {
 			videoConstraints.facingMode = this._facingMode;
 		} else {
 			videoConstraints.deviceId = { exact: this._selectedDeviceId };
 		}
-		var constraints = {
+		const constraints = {
 			video: videoConstraints,
 			audio: false
 		};
@@ -61,8 +62,16 @@ export default class Webcam {
 			}
 		}
 	}
-	/* Change Facing mode and selected camera */
+	/* Horizontally flip the current streaming camera */
 	flip() {
+		this._horizontalFlipFactor *= -1;
+		this.caliberateWebCamElement();
+	}
+	caliberateWebCamElement() {
+		this._webcamElement.style.transform = this._horizontalFlipFactor === -1 ? `scale(-1, 1)` : '';
+	}
+	/* Change Facing mode and selected camera */
+	switchCamera() {
 		this._facingMode = (this._facingMode == 'user') ? 'enviroment' : 'user';
 		this._webcamElement.style.transform = "";
 		this.selectCamera();
@@ -87,20 +96,14 @@ export default class Webcam {
 									.then(facingMode => {
 										resolve(this._facingMode);
 									})
-									.catch(error => {
-										reject(error);
-									});
+									.catch(reject);
 							} else {
 								resolve(this._selectedDeviceId);
 							}
 						})
-						.catch(error => {
-							reject(error);
-						});
+						.catch(reject);
 				})
-				.catch(error => {
-					reject(error);
-				});
+				.catch(reject);
 		});
 	}
 	/* Get all video input devices info */
@@ -111,9 +114,7 @@ export default class Webcam {
 					this.getVideoInputs(devices);
 					resolve(this._webcamList);
 				})
-				.catch(error => {
-					reject(error);
-				});
+				.catch(reject);
 		});
 	}
 	/* Start streaming webcam to video element */
@@ -123,16 +124,13 @@ export default class Webcam {
 				.then(stream => {
 					this._streamList.push(stream);
 					this._webcamElement.srcObject = stream;
-					if (this._facingMode == 'user') {
-						this._webcamElement.style.transform = "scale(-1,1)";
-					}
+					if (this._facingMode == 'user' && !this._isStopped) this._horizontalFlipFactor = -1;
+					this.caliberateWebCamElement();
+					delete this._isStopped;
 					this._webcamElement.play();
 					resolve(this._facingMode);
 				})
-				.catch(error => {
-					console.log(error);
-					reject(error);
-				});
+				.catch(reject);
 		});
 	}
 	/* Stop streaming webcam */
@@ -142,25 +140,29 @@ export default class Webcam {
 				track.stop();
 			});
 		});
+		this._isStopped = true;
 	}
 	snap() {
 		if (this._canvasElement != null) {
 			if (this._snapSoundElement != null) {
+				this._snapSoundElement.onpause = () => this._snapSoundElement.currentTime = 0;
+				this._snapSoundElement.currentTime = 0;
 				this._snapSoundElement.play();
 			}
 			this._canvasElement.height = this._webcamElement.scrollHeight;
 			this._canvasElement.width = this._webcamElement.scrollWidth;
-			let context = this._canvasElement.getContext('2d');
-			if (this._facingMode == 'user') {
+			const context = this._canvasElement.getContext('2d');
+			if (this._horizontalFlipFactor === -1) {
 				context.translate(this._canvasElement.width, 0);
 				context.scale(-1, 1);
 			}
 			context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
 			context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
-			let data = canvas.toDataURL('image/png');
-			return data;
+			return this._canvasElement.toDataURL('image/png');
 		} else {
 			throw "canvas element is missing";
 		}
 	}
 }
+window.Webcam = Webcam;
+export default Webcam;

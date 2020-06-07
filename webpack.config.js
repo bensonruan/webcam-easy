@@ -8,9 +8,7 @@ module.exports = {
 	entry: ['@babel/polyfill', paths.src + '/webcam-easy.js'],
 	output: {
 		path: paths.dist,
-		filename: 'webcam-easy.js',
-		library: 'webcam-easy',
-		libraryTarget: 'umd'
+		filename: 'webcam-easy.js'
 	},
 	module: {
 		rules: [{

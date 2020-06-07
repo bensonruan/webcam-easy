@@ -16,6 +16,10 @@
 		"frontcamera",
 		"backcamera"
 	],
+	"scripts": {
+		"start": "webpack-dev-server --output-public-path=/demo/  --mode development --progress --open --hot",
+		"build": "webpack --mode production --progress"
+	},
 	"author": "Benson Ruan",
 	"license": "MIT",
 	"devDependencies": {
