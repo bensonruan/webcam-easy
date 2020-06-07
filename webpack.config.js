@@ -5,7 +5,7 @@ var paths = {
 	dist: path.join(__dirname, 'dist'),
 };
 module.exports = {
-	entry: paths.src + '/webcam-easy.js',
+	entry: ['@babel/polyfill', paths.src + '/webcam-easy.js'],
 	output: {
 		path: paths.dist,
 		filename: 'webcam-easy.js',
