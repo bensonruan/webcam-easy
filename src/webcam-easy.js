@@ -85,23 +85,18 @@ class Webcam {
 	async start(startStream = true) {
 		return new Promise((resolve, reject) => {
 			this.stop();
-			navigator.mediaDevices.getUserMedia(this.getMediaConstraints()) //get permisson from user
-				.then(stream => {
-					this._streamList.push(stream);
-					this.info() //get all video input devices info
-						.then(webcams => {
-							this.selectCamera(); //select camera based on facingMode
-							if (startStream) {
-								this.stream()
-									.then(facingMode => {
-										resolve(this._facingMode);
-									})
-									.catch(reject);
-							} else {
-								resolve(this._selectedDeviceId);
-							}
-						})
-						.catch(reject);
+			this.info() //get all video input devices info
+				.then(webcams => {
+					this.selectCamera(); //select camera based on facingMode
+					if (startStream) {
+						this.stream()
+							.then(facingMode => {
+								resolve(this._facingMode);
+							})
+							.catch(reject);
+					} else {
+						resolve(this._selectedDeviceId);
+					}
 				})
 				.catch(reject);
 		});
