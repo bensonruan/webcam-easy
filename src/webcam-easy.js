@@ -75,26 +75,23 @@ class Webcam {
 		3. Select camera based on facingMode 
 		4. Start stream
 	*/
-	async start(startStream = true) {
-		return new Promise((resolve, reject) => {
-			this.stop();
-			this.info() //get all video input devices info
-				.then(webcams => {
-					this.selectCamera(); //select camera based on facingMode
-					if (startStream) {
-						this.stream().then(resolve).catch(reject);
-					} else {
-						resolve(this._selectedDeviceId);
-					}
-				}).catch(reject);
+	start(startStream = true) {
+		this.stop();
+		return this.info().then(webcams => { //get all video input devices info
+			this.selectCamera(); //select camera based on facingMode
+			if (startStream) {
+				return this.stream();
+			} else {
+				return this._selectedDeviceId;
+			}
 		});
 	}
 	/* Get all video input devices info */
-	async info() {
+	info() {
 		return navigator.mediaDevices.enumerateDevices().then(devices => this.getVideoInputs(devices));
 	}
 	/* Start streaming webcam to video element */
-	async stream() {
+	stream() {
 		return navigator.mediaDevices.getUserMedia(this.getMediaConstraints()).then(stream => {
 			this._streamList.push(stream);
 			this._webcamElement.srcObject = stream;
