@@ -160,25 +160,23 @@ export default class Webcam {
       });   
     }
 
-    snap() {
-      if(this._canvasElement!=null){
-        if(this._snapSoundElement!= null){
-          this._snapSoundElement.play();
-        }
-        this._canvasElement.height = this._webcamElement.scrollHeight;
-        this._canvasElement.width = this._webcamElement.scrollWidth;
-        let context = this._canvasElement.getContext('2d');
-        if(this._facingMode == 'user'){
-          context.translate(this._canvasElement.width, 0);
-          context.scale(-1, 1);
-        }
-        context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
-        context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
-        let data = this._canvasElement.toDataURL('image/png');
-        return data;
+    snap(format) {
+      if(this._canvasElement==null){
+        this._canvasElement = document.createElement("canvas");
       }
-      else{
-        throw "canvas element is missing";
+      if(this._snapSoundElement!= null){
+        this._snapSoundElement.play();
       }
+      this._canvasElement.height = this._webcamElement.scrollHeight;
+      this._canvasElement.width = this._webcamElement.scrollWidth;
+      let context = this._canvasElement.getContext('2d');
+      if(this._facingMode == 'user'){
+        context.translate(this._canvasElement.width, 0);
+        context.scale(-1, 1);
+      }
+      context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
+      context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
+      let data = this._canvasElement.toDataURL(format||'image/png');
+      return data;
     } 
 }
