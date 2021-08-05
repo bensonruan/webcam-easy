@@ -1,14 +1,20 @@
 export default class Webcam {
     constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null) {
       this._webcamElement = webcamElement;
-      this._webcamElement.width = this._webcamElement.width || 640;
-      this._webcamElement.height = this._webcamElement.height || this._webcamElement.width * (3 / 4);
+      this._webcamElement.width = this._webcamElement.width || screen.availWidth;
+      this._webcamElement.height = this._webcamElement.height || screen.availHeight;
       this._facingMode = facingMode;
       this._webcamList = [];
       this._streamList = [];
       this._selectedDeviceId = '';
       this._canvasElement = canvasElement;
       this._snapSoundElement = snapSoundElement;
+      var self = this;
+
+      window.addEventListener("resize", function() {
+        self._webcamElement.width = screen.availWidth;
+        self._webcamElement.height = screen.availHeight;
+      }, false);
     }
 
     get facingMode(){
