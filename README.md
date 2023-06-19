@@ -95,3 +95,6 @@ webcam.stop();
 - facingMode : 'user' or 'enviroment'
 - webcamList : all available camera device
 - webcamCount : number of available camera device
+
+## Support me 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W6METMY)
