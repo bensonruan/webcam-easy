@@ -77,7 +77,7 @@ export default class Webcam {
     flip(){
       this._facingMode = (this._facingMode == 'user')? 'enviroment': 'user';
       this._webcamElement.style.transform = "";
-      this.selectCamera();  
+      this.stream();
     }
 
     /*
