@@ -16,7 +16,7 @@ You can easily add it as a module to your own app.
 
 #### Use Git Clone
 ``` shell
-git https://github.com/bensonruan/webcam-easy.git
+git clone https://github.com/bensonruan/webcam-easy.git
 ```
 
 #### OR Use NPM
