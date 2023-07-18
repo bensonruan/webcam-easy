@@ -35,6 +35,32 @@ $('#closeError').click(function() {
     $("#webcam-switch").prop('checked', false).change();
 });
 
+$("#take-photo").click(function () {
+    beforeTakePhoto();
+    let picture = webcam.snap();
+    document.querySelector('#download-photo').href = picture;
+    afterTakePhoto();
+});
+
+$("#resume-camera").click(function () {
+    webcam.stream()
+        .then(facingMode =>{
+            removeCapture();
+        });
+});
+
+$("#exit-app").click(function () {
+    removeCapture();
+    $("#webcam-switch").prop("checked", false).change();
+});
+
+$(window).resize(function() {
+    setTimeout(function() {
+        webcam.setSize();
+      }, 200);
+    
+});
+
 function displayError(err = ''){
     if(err!=''){
         $("#errorMsg").html(err);
@@ -57,7 +83,7 @@ function cameraStarted(){
     $('body').css('overflow-y','hidden');
 }
 
-function cameraStopped(){
+function cameraStopped(doScroll = false, appName = "webcam-app"){
     $("#errorMsg").addClass("d-none");
     $("#wpfront-scroll-top-container").removeClass("d-none");
     $("#webcam-control").removeClass("webcam-on");
@@ -66,15 +92,13 @@ function cameraStopped(){
     $(".webcam-container").addClass("d-none");
     $("#webcam-caption").html("Click to Start Camera");
     $('.md-modal').removeClass('md-show');
+    if(doScroll){
+        $('body').css('overflow-y','scroll');
+        $([document.documentElement, document.body]).animate({
+            scrollTop: ($("#"+appName).offset().top - 80)
+    }, 1000);    }
 }
 
-
-$("#take-photo").click(function () {
-    beforeTakePhoto();
-    let picture = webcam.snap();
-    document.querySelector('#download-photo').href = picture;
-    afterTakePhoto();
-});
 
 function beforeTakePhoto(){
     $('.flash')
@@ -106,15 +130,3 @@ function removeCapture(){
     $('#download-photo').addClass('d-none');
     $('#resume-camera').addClass('d-none');
 }
-
-$("#resume-camera").click(function () {
-    webcam.stream()
-        .then(facingMode =>{
-            removeCapture();
-        });
-});
-
-$("#exit-app").click(function () {
-    removeCapture();
-    $("#webcam-switch").prop("checked", false).change();
-});

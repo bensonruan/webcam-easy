@@ -1,14 +1,14 @@
 export default class Webcam {
     constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null) {
       this._webcamElement = webcamElement;
-      this._webcamElement.width = this._webcamElement.width || 640;
-      this._webcamElement.height = this._webcamElement.height || this._webcamElement.width * (3 / 4);
       this._facingMode = facingMode;
       this._webcamList = [];
       this._streamList = [];
       this._selectedDeviceId = '';
       this._canvasElement = canvasElement;
       this._snapSoundElement = snapSoundElement;
+      this._status = "off";
+      this.setSize();
     }
 
     get facingMode(){
@@ -53,6 +53,7 @@ export default class Webcam {
         } else {
             videoConstraints.deviceId = { exact: this._selectedDeviceId};
         }
+        videoConstraints.aspectRatio = this._ratio;
         var constraints = {
             video: videoConstraints,
             audio: false
@@ -98,6 +99,7 @@ export default class Webcam {
                 if(startStream){
                     this.stream()
                         .then(facingMode =>{
+                            this._status = "on";
                             resolve(this._facingMode);
                         })
                         .catch(error => {
@@ -130,7 +132,7 @@ export default class Webcam {
           });
       });
     }
-  
+
     /* Start streaming webcam to video element */ 
     async stream() {
       return new Promise((resolve, reject) => {         
@@ -142,6 +144,7 @@ export default class Webcam {
                 this._webcamElement.style.transform = "scale(-1,1)";
               }
               this._webcamElement.play();
+              this._status = "on";
               resolve(this._facingMode);
           })
           .catch(error => {
@@ -157,7 +160,8 @@ export default class Webcam {
         stream.getTracks().forEach(track => {
           track.stop();
         });
-      });   
+      });
+      this._status = "off";  
     }
 
     snap() {
@@ -165,8 +169,14 @@ export default class Webcam {
         if(this._snapSoundElement!= null){
           this._snapSoundElement.play();
         }
-        this._canvasElement.height = this._webcamElement.scrollHeight;
-        this._canvasElement.width = this._webcamElement.scrollWidth;
+        if(this._ratio >= 1 ){
+          this._canvasElement.height = this._webcamElement.scrollHeight;
+          this._canvasElement.width = this._webcamElement.scrollWidth;
+        }else{
+          this._canvasElement.height = this._webcamElement.scrollHeight;
+          this._canvasElement.width = this._webcamElement.scrollHeight * this._ratio;
+        }
+
         let context = this._canvasElement.getContext('2d');
         if(this._facingMode == 'user'){
           context.translate(this._canvasElement.width, 0);
@@ -181,4 +191,22 @@ export default class Webcam {
         throw "canvas element is missing";
       }
     } 
-}
+
+    setSize(){
+      let currentStatus = this._status;
+      if(currentStatus === "on"){
+        this.stop();
+      }
+      this._ratio = window.innerWidth/window.innerHeight > 1? (4/3):  window.innerWidth/window.innerHeight;
+      if(this._ratio >= 1 ){
+        this._webcamElement.width = this._webcamElement.width || 640;
+        this._webcamElement.height = this._webcamElement.height || this._webcamElement.width / this._ratio;
+      }else{
+        this._webcamElement.height = this._webcamElement.height || 480;
+        this._webcamElement.width = this._webcamElement.width || this._webcamElement.height * this._ratio;
+      }
+      if(currentStatus === "on"){
+        this.stream();
+      }
+    }
+  }
