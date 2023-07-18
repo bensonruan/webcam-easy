@@ -131,23 +131,23 @@ export default class Webcam {
       });
     }
   
-    /* Start streaming webcam to video element */ 
+    /* Start streaming webcam to video element.
+       Assumes start has been called.    */ 
     async stream() {
       return new Promise((resolve, reject) => {         
-        navigator.mediaDevices.getUserMedia(this.getMediaConstraints())
-          .then(stream => {
-              this._streamList.push(stream);
-              this._webcamElement.srcObject = stream;
-              if(this._facingMode == 'user'){
-                this._webcamElement.style.transform = "scale(-1,1)";
-              }
-              this._webcamElement.play();
-              resolve(this._facingMode);
-          })
-          .catch(error => {
-              console.log(error);
-              reject(error);
-          });
+        if(this._streamList.length > 0){            
+          this._webcamElement.srcObject = this._streamList[0];
+          if(this._facingMode == 'user'){
+            this._webcamElement.style.transform = "scale(-1,1)";
+          }
+          this._webcamElement.play();
+          resolve(this._facingMode);
+        }
+        else{
+           var error = 'Webcam start not called before stream.';
+           console.log(error);
+           reject(error);
+        }
       });
     }
 
