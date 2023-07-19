@@ -56,8 +56,8 @@ $("#exit-app").click(function () {
 
 $(window).resize(function() {
     setTimeout(function() {
-        webcam.setSize();
-      }, 200);
+        webcam.setPosition();
+      }, 100);
     
 });
 

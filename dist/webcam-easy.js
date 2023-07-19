@@ -1,5 +1,5 @@
 class Webcam {
-    constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null) {
+    constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null, ratio = 16/9) {
       this._webcamElement = webcamElement;
       this._facingMode = facingMode;
       this._webcamList = [];
@@ -8,7 +8,7 @@ class Webcam {
       this._canvasElement = canvasElement;
       this._snapSoundElement = snapSoundElement;
       this._status = "off";
-      this.setSize();
+      this._ratio = ratio;
     }
 
     get facingMode(){
@@ -100,6 +100,10 @@ class Webcam {
                     this.stream()
                         .then(facingMode =>{
                             this._status = "on";
+                            var that = this;
+                            setTimeout(function() {
+                              that.setPosition();
+                            }, 100);
                             resolve(this._facingMode);
                         })
                         .catch(error => {
@@ -169,13 +173,14 @@ class Webcam {
         if(this._snapSoundElement!= null){
           this._snapSoundElement.play();
         }
-        if(this._ratio >= 1 ){
-          this._canvasElement.height = this._webcamElement.scrollHeight;
-          this._canvasElement.width = this._webcamElement.scrollWidth;
+        let leftPosition = 0;
+        if( this._webcamElement.clientWidth < window.innerWidth ){
+          this._canvasElement.width = this._webcamElement.clientWidth;
         }else{
-          this._canvasElement.height = this._webcamElement.scrollHeight;
-          this._canvasElement.width = this._webcamElement.scrollHeight * this._ratio;
+          this._canvasElement.width = window.innerWidth;
+          leftPosition = (this._webcamElement.clientWidth/2 - window.innerWidth/2);
         }
+        this._canvasElement.height = this._webcamElement.clientHeight;
 
         let context = this._canvasElement.getContext('2d');
         if(this._facingMode == 'user'){
@@ -183,7 +188,13 @@ class Webcam {
           context.scale(-1, 1);
         }
         context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
-        context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
+        context.drawImage(this._webcamElement,
+                          leftPosition * (this._webcamElement.width / this._webcamElement.clientWidth),
+                          0,
+                          this._webcamElement.width * (this._canvasElement.width/this._webcamElement.clientWidth), 
+                          this._webcamElement.height,
+                          0,0,
+                          this._canvasElement.width, this._canvasElement.height);
         let data = this._canvasElement.toDataURL('image/png');
         return data;
       }
@@ -192,21 +203,13 @@ class Webcam {
       }
     } 
 
-    setSize(){
-      let currentStatus = this._status;
-      if(currentStatus === "on"){
-        this.stop();
-      }
-      this._ratio = window.innerWidth/window.innerHeight > 1? (4/3):  window.innerWidth/window.innerHeight;
-      if(this._ratio >= 1 ){
+    setPosition(){
+      try{
         this._webcamElement.width = this._webcamElement.width || 640;
-        this._webcamElement.height = this._webcamElement.height || this._webcamElement.width / this._ratio;
-      }else{
-        this._webcamElement.height = this._webcamElement.height || 480;
-        this._webcamElement.width = this._webcamElement.width || this._webcamElement.height * this._ratio;
-      }
-      if(currentStatus === "on"){
-        this.stream();
+        this._webcamElement.height = this._webcamElement.width / this._ratio;
+        this._webcamElement.style.left = (-(this._webcamElement.clientWidth/2 - window.innerWidth/2)) + "px";
+      }catch(error){
+        console.log(error);
       }
     }
 }

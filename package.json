@@ -1,6 +1,6 @@
 {
   "name": "webcam-easy",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "HTML5 webcam streaming javascript library, with front and back camera switch, also have take photo function.",
   "main": "src/webcam-easy.js",
   "repository": {
@@ -17,5 +17,8 @@
     "backcamera"
   ],
   "author": "Benson Ruan",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "uglify-js": "^3.17.4"
+  }
 }
