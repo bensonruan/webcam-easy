@@ -6,6 +6,8 @@ const snapSoundElement = document.getElementById('snapSound');
 
 const webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
 
+let hideElement = true;
+
 
 $("#webcam-switch").change(function () {
     if(this.checked){
@@ -13,7 +15,7 @@ $("#webcam-switch").change(function () {
         webcam.start()
             .then(result =>{
                cameraStarted();
-               console.log("webcam started");
+               //console.log("webcam started");
             })
             .catch(err => {
                 displayError();
@@ -22,7 +24,7 @@ $("#webcam-switch").change(function () {
     else {        
         cameraStopped();
         webcam.stop();
-        console.log("webcam stopped");
+        //console.log("webcam stopped");
     }        
 });
 
@@ -54,13 +56,6 @@ $("#exit-app").click(function () {
     $("#webcam-switch").prop("checked", false).change();
 });
 
-$(window).resize(function() {
-    setTimeout(function() {
-        webcam.setPosition();
-      }, 100);
-    
-});
-
 function displayError(err = ''){
     if(err!=''){
         $("#errorMsg").html(err);
@@ -78,20 +73,28 @@ function cameraStarted(){
     if( webcam.webcamList.length > 1){
         $("#cameraFlip").removeClass('d-none');
     }
-    $("#wpfront-scroll-top-container").addClass("d-none");
+    if(hideElement){
+        $("#wpfront-scroll-top-container").addClass("d-none");
+        $(".sd-sharing-enabled").addClass("d-none d-lg-block");
+        $(".floatingchat-container-wrap-mobi").addClass("d-none");
+    }
     window.scrollTo(0, 0); 
     $('body').css('overflow-y','hidden');
 }
 
 function cameraStopped(doScroll = false, appName = "webcam-app"){
     $("#errorMsg").addClass("d-none");
-    $("#wpfront-scroll-top-container").removeClass("d-none");
     $("#webcam-control").removeClass("webcam-on");
     $("#webcam-control").addClass("webcam-off");
     $("#cameraFlip").addClass('d-none');
     $(".webcam-container").addClass("d-none");
     $("#webcam-caption").html("Click to Start Camera");
     $('.md-modal').removeClass('md-show');
+    if(hideElement){
+        $("#wpfront-scroll-top-container").removeClass("d-none");
+        $(".sd-sharing-enabled").removeClass("d-none d-lg-block");
+        $(".floatingchat-container-wrap-mobi").removeClass("d-none");
+    }
     if(doScroll){
         $('body').css('overflow-y','scroll');
         $([document.documentElement, document.body]).animate({
