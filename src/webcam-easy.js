@@ -1,14 +1,14 @@
 export default class Webcam {
-    constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null, ratio = 16/9) {
+    constructor(webcamElement, facingMode = 'user', canvasElement = null, snapSoundElement = null) {
       this._webcamElement = webcamElement;
+      this._webcamElement.width = this._webcamElement.width || 640;
+      this._webcamElement.height = this._webcamElement.height || 360;
       this._facingMode = facingMode;
       this._webcamList = [];
       this._streamList = [];
       this._selectedDeviceId = '';
       this._canvasElement = canvasElement;
       this._snapSoundElement = snapSoundElement;
-      this._status = "off";
-      this._ratio = ratio;
     }
 
     get facingMode(){
@@ -53,7 +53,8 @@ export default class Webcam {
         } else {
             videoConstraints.deviceId = { exact: this._selectedDeviceId};
         }
-        videoConstraints.aspectRatio = this._ratio;
+        videoConstraints.width = {exact: this._webcamElement.width};
+        videoConstraints.height = {exact: this._webcamElement.height};
         var constraints = {
             video: videoConstraints,
             audio: false
@@ -99,11 +100,6 @@ export default class Webcam {
                 if(startStream){
                     this.stream()
                         .then(facingMode =>{
-                            this._status = "on";
-                            var that = this;
-                            setTimeout(function() {
-                              that.setPosition();
-                            }, 100);
                             resolve(this._facingMode);
                         })
                         .catch(error => {
@@ -148,7 +144,6 @@ export default class Webcam {
                 this._webcamElement.style.transform = "scale(-1,1)";
               }
               this._webcamElement.play();
-              this._status = "on";
               resolve(this._facingMode);
           })
           .catch(error => {
@@ -164,8 +159,7 @@ export default class Webcam {
         stream.getTracks().forEach(track => {
           track.stop();
         });
-      });
-      this._status = "off";  
+      });   
     }
 
     snap() {
@@ -173,28 +167,15 @@ export default class Webcam {
         if(this._snapSoundElement!= null){
           this._snapSoundElement.play();
         }
-        let leftPosition = 0;
-        if( this._webcamElement.clientWidth < window.innerWidth ){
-          this._canvasElement.width = this._webcamElement.clientWidth;
-        }else{
-          this._canvasElement.width = window.innerWidth;
-          leftPosition = (this._webcamElement.clientWidth/2 - window.innerWidth/2);
-        }
-        this._canvasElement.height = this._webcamElement.clientHeight;
-
+        this._canvasElement.height = this._webcamElement.scrollHeight;
+        this._canvasElement.width = this._webcamElement.scrollWidth;
         let context = this._canvasElement.getContext('2d');
         if(this._facingMode == 'user'){
           context.translate(this._canvasElement.width, 0);
           context.scale(-1, 1);
         }
         context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
-        context.drawImage(this._webcamElement,
-                          leftPosition * (this._webcamElement.width / this._webcamElement.clientWidth),
-                          0,
-                          this._webcamElement.width * (this._canvasElement.width/this._webcamElement.clientWidth), 
-                          this._webcamElement.height,
-                          0,0,
-                          this._canvasElement.width, this._canvasElement.height);
+        context.drawImage(this._webcamElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
         let data = this._canvasElement.toDataURL('image/png');
         return data;
       }
@@ -202,14 +183,4 @@ export default class Webcam {
         throw "canvas element is missing";
       }
     } 
-
-    setPosition(){
-      try{
-        this._webcamElement.width = this._webcamElement.width || 640;
-        this._webcamElement.height = this._webcamElement.width / this._ratio;
-        this._webcamElement.style.left = (-(this._webcamElement.clientWidth/2 - window.innerWidth/2)) + "px";
-      }catch(error){
-        console.log(error);
-      }
-    }
   }

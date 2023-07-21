@@ -1,11 +1,10 @@
 #webcam-app {
-  background-image: url(../images//background.jpg);
+  background-image: url(../images/background.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
   background-color: black;
-  width: 100vw;
-  height: 100vh;
+  height: 60vh;
 }
 
 .webcam-container{
@@ -18,12 +17,6 @@
     height: 100vh;
     width: 100vw;
 }
-
-@media screen and (min-width: 768px) {
-    .webcam-container {
-        background-attachment: fixed;
-    }
- }
 
 .form-control.webcam-start{
     position: relative;
@@ -45,7 +38,7 @@
 
 .form-control.webcam-on {
   position: fixed;
-  top: 10vh;
+  top: 12vh;
   bottom: auto;
   left: 0px;
   right: auto;
@@ -133,11 +126,15 @@
   #webcam{
     display: block;
     position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     width: auto;
     height: 100vh;
     z-index: 999;
     pointer-events: none;
-    margin: auto;
+    margin: 0 auto;
   }
 
   .md-modal {
@@ -215,17 +212,7 @@
      z-index: 999999;
  }
 
- @media screen and (min-width: 768px) {
-    #errorMsg {
-        position: fixed;
-        top: 32vh;
-        left: 20vw;
-        padding: 20px;
-        z-index: 999999;
-    }
- }
-
- #cameraFlip {
+#cameraFlip {
   width: 70px;
     height: 55px;
     margin-left: 40px;
@@ -275,20 +262,26 @@
 #canvas{
   background-color: transparent;
   position: absolute;
-  width: auto;
-  height: 100vh;
   z-index: 9999;
   margin: auto;
   top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   margin-left: auto;
   margin-right: auto;
 }
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 480px) {
   .form-control.webcam-start{
     width: 300px;
+  }
+
+  #webcam{
+    position: absolute;
+    width: auto;
+    height: 100vh;
+    margin: auto 0;;
   }
 }
 
@@ -302,6 +295,20 @@
   .form-control.webcam-on {
     top: 17vh;
     left: 0;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .webcam-container {
+      background-attachment: fixed;
+  }
+
+  #errorMsg {
+    position: fixed;
+    top: 32vh;
+    left: 20vw;
+    padding: 20px;
+    z-index: 999999;
   }
 }
 
