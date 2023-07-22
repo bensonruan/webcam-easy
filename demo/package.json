@@ -1,6 +1,6 @@
 {
   "name": "webcam-js-demo-app",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "HTML5 webcam streaming library with from and back camera switch",
   "main": "js/app.js",
   "repository": {

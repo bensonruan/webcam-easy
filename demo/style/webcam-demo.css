@@ -4,7 +4,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-color: black;
-  height: 60vh;
+  height: 100vh;
 }
 
 .webcam-container{
@@ -281,7 +281,9 @@
     position: absolute;
     width: auto;
     height: 100vh;
-    margin: auto 0;;
+    left: 0;
+    right: 0;
+    margin: auto;
   }
 }
 
