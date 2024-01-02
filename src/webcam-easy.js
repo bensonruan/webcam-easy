@@ -66,7 +66,7 @@ export default class Webcam {
     selectCamera(){
       for(let webcam of this._webcamList){
         if(   (this._facingMode=='user' && webcam.label.toLowerCase().includes('front'))
-          ||  (this._facingMode=='enviroment' && webcam.label.toLowerCase().includes('back'))
+          ||  (this._facingMode=='environment' && webcam.label.toLowerCase().includes('back'))
         )
         {
           this._selectedDeviceId = webcam.deviceId;
@@ -77,7 +77,7 @@ export default class Webcam {
 
     /* Change Facing mode and selected camera */ 
     flip(){
-      this._facingMode = (this._facingMode == 'user')? 'enviroment': 'user';
+      this._facingMode = (this._facingMode == 'user')? 'environment': 'user';
       this._webcamElement.style.transform = "";
       this.selectCamera();  
     }
